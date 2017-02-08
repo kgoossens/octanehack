@@ -1,53 +1,57 @@
-FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+dFORMAT: 1A
+HOST: http://valuestreams.krigoo.be/
 
-# hacktane
+# Agile Value Manager
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Agile Value Manager allows automation of Value Stream Management, to be used with HPE ALM Octane.
 
-## Questions Collection [/questions]
+## Value Streams [/streams]
 
-### List All Questions [GET]
+### List All Value Streams [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                "count": 3,
+                "valuestreams": [
                     {
-                        "choice": "Swift",
-                        "votes": 2048
+                        "id": 2,
+                        "name": "Value Stream A",
+                        "owner": [
+                            "type": "workspace_user",
+                            "id": 2002
+                        ]
                     }, {
-                        "choice": "Python",
-                        "votes": 1024
+                        "id": 3,
+                        "name": "Value Stream B",
+                        "owner": [
+                            "type": "workspace_user",
+                            "id": 1001
+                        ]
                     }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
+                        "id": 5,
+                        "name": "Value Stream C",
+                        "owner": [
+                            "type": "workspace_user",
+                            "id": 2003
+                        ]
                     }
                 ]
             }
         ]
 
-### Create a New Question [POST]
+### Create a New Value Stream [POST]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+Add a new Value Stream to the Octane workspace.
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
+            "name": "Value Stream Name",
+            "owner": [
+                "type": "workspace_user",
+                "id": "id"
             ]
         }
 
@@ -55,26 +59,62 @@ form of choices.
 
     + Headers
 
-            Location: /questions/2
+            Location: /stream/2
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
+                "id": 2
+            }
+
+## Validations [/validations]   
+A validation creates the necessary User Stories and assign them to the responsible teams.
+
+### List All Validations [GET]
+
++ Request (application/json)
+
+        {
+            "filter": "all"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+    
+            Location: /validation
+
+    + Body
+    
+            {
+                "id": 2
+            }
+
+## Validation [/validation]            
+### Get a Validation [GET]
+
++ Request (application/json)
+
+        {
+            "feature": id,
+            "release": id,
+            "team": id,
+            "storypoints": value
+        }
+        
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /validation/2
+            
+    + Body
+    
+            {
+                "count": 3
+                "stories": [
+                    "id": 2,
+                    "id": 3,
+                    "id": 5
                 ]
             }
